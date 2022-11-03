@@ -54,7 +54,7 @@
     @autoreleasepool {
         _runLoop = [NSRunLoop currentRunLoop];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0),^{
-            dispatch_group_leave(_waitGroup);
+            dispatch_group_leave(self->_waitGroup);
           }) ;
 
         // Add an empty run loop source to prevent runloop from spinning.
