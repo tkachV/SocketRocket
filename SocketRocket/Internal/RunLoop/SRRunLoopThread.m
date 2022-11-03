@@ -29,6 +29,7 @@
     dispatch_once(&onceToken, ^{
         thread = [[SRRunLoopThread alloc] init];
         thread.name = @"com.facebook.SocketRocket.NetworkThread";
+        thread.qualityOfService = NSQualityOfServiceUserInitiated;
         [thread start];
     });
     return thread;
@@ -52,7 +53,9 @@
 {
     @autoreleasepool {
         _runLoop = [NSRunLoop currentRunLoop];
-        dispatch_group_leave(_waitGroup);
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0),^{
+            dispatch_group_leave(_waitGroup);
+          }) ;
 
         // Add an empty run loop source to prevent runloop from spinning.
         CFRunLoopSourceContext sourceCtx = {
